@@ -1,0 +1,650 @@
+/* ===================================================================
+   FlashMind — Premium Dark Theme
+   ================================================================ */
+
+/* ---------- Variables ---------- */
+:root {
+    --bg-primary: #0a0e17;
+    --bg-secondary: #111827;
+    --bg-card: rgba(17, 24, 39, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --accent-primary: #6C63FF;
+    --accent-secondary: #A78BFA;
+    --accent-gradient: linear-gradient(135deg, #6C63FF, #A78BFA, #C084FC);
+    --text-primary: #f1f5f9;
+    --text-muted: #94a3b8;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---------- Global ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 20% 50%, rgba(108, 99, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(167, 139, 250, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(192, 132, 252, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.main-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+}
+
+/* ---------- Glassmorphism Navbar ---------- */
+.glass-navbar {
+    background: rgba(10, 14, 23, 0.8) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    padding: 0.8rem 0;
+    transition: var(--transition);
+}
+
+.brand-text {
+    font-weight: 800;
+    font-size: 1.3rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar .nav-link {
+    color: var(--text-muted) !important;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.navbar .nav-link:hover {
+    color: var(--text-primary) !important;
+    background: var(--glass-bg);
+}
+
+.avatar-sm {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* ---------- Glass Card ---------- */
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition);
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.glass-dropdown {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--glass-shadow);
+}
+
+.glass-dropdown .dropdown-item {
+    color: var(--text-muted);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.glass-dropdown .dropdown-item:hover {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+}
+
+/* ---------- Glass Inputs ---------- */
+.glass-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 0.7rem 1rem;
+    transition: var(--transition);
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15) !important;
+}
+
+.glass-input::placeholder {
+    color: #64748b;
+}
+
+.glass-input-icon {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-right: none !important;
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+    background: var(--accent-gradient) !important;
+    border: none !important;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+}
+
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn-glow:hover::after {
+    opacity: 1;
+}
+
+.btn-outline-light {
+    border-color: var(--glass-border);
+    color: var(--text-muted);
+}
+
+.btn-outline-light:hover {
+    background: var(--glass-bg);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+/* ---------- Gradient Text ---------- */
+.gradient-text {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fw-800 {
+    font-weight: 800 !important;
+}
+
+/* ---------- Hero Section ---------- */
+.hero-section {
+    padding-top: 100px;
+}
+
+.hero-card-stack {
+    position: relative;
+    height: 380px;
+    perspective: 1000px;
+}
+
+.hero-card {
+    position: absolute;
+    width: 260px;
+    height: 160px;
+    border-radius: var(--radius-lg);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-card-1 {
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-3deg);
+    z-index: 3;
+    animation: float1 4s ease-in-out infinite;
+}
+
+.hero-card-2 {
+    top: 20%;
+    left: 70%;
+    transform: translate(-50%, -50%) rotate(5deg) scale(0.9);
+    z-index: 2;
+    animation: float2 5s ease-in-out infinite;
+}
+
+.hero-card-3 {
+    top: 55%;
+    left: 35%;
+    transform: translate(-50%, -50%) rotate(-8deg) scale(0.85);
+    z-index: 1;
+    animation: float3 6s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-3deg); }
+    50% { transform: translate(-50%, -55%) rotate(-1deg); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(-50%, -50%) rotate(5deg) scale(0.9); }
+    50% { transform: translate(-50%, -55%) rotate(3deg) scale(0.9); }
+}
+
+@keyframes float3 {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-8deg) scale(0.85); }
+    50% { transform: translate(-50%, -55%) rotate(-6deg) scale(0.85); }
+}
+
+/* ---------- Feature Cards ---------- */
+.feature-card {
+    transition: var(--transition);
+    cursor: default;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+/* ---------- Auth Section ---------- */
+.auth-section {
+    padding-top: 80px;
+}
+
+.auth-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+/* ---------- Stats Cards ---------- */
+.stats-card {
+    text-align: center;
+    transition: var(--transition);
+}
+
+.stats-card:hover {
+    transform: translateY(-4px);
+}
+
+.stats-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin: 0 auto;
+}
+
+/* ---------- Deck List (Dashboard) ---------- */
+.deck-list-item {
+    transition: var(--transition);
+    color: var(--text-primary);
+}
+
+.deck-list-item:hover {
+    background: var(--glass-bg);
+}
+
+.deck-list-item + .deck-list-item {
+    border-top: 1px solid var(--glass-border);
+}
+
+.deck-color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ---------- Deck Cards (Grid) ---------- */
+.deck-card {
+    transition: var(--transition);
+}
+
+.deck-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.deck-color-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: white;
+}
+
+/* ---------- Card Preview ---------- */
+.card-preview {
+    transition: var(--transition);
+}
+
+.card-preview:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Color Picker ---------- */
+.color-option input[type="radio"] {
+    display: none;
+}
+
+.color-swatch {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition);
+}
+
+.color-option input[type="radio"]:checked + .color-swatch {
+    border-color: white;
+    box-shadow: 0 0 0 2px var(--accent-primary);
+    transform: scale(1.15);
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+/* ---------- Session List ---------- */
+.session-item {
+    transition: var(--transition);
+}
+
+.session-item:hover {
+    background: var(--glass-bg);
+}
+
+.session-score {
+    font-size: 1.1rem;
+    font-weight: 700;
+    min-width: 50px;
+    text-align: center;
+}
+
+/* ---------- Study Mode — Flashcard ---------- */
+.study-section {
+    min-height: 80vh;
+}
+
+.flashcard-container {
+    perspective: 1200px;
+    height: 320px;
+    cursor: pointer;
+}
+
+.flashcard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flashcard.flipped {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+}
+
+.flashcard-back {
+    transform: rotateY(180deg);
+    background: rgba(108, 99, 255, 0.08);
+    border-color: rgba(108, 99, 255, 0.2);
+}
+
+.flashcard-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+}
+
+.flashcard-content {
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.5;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.flashcard-hint {
+    position: absolute;
+    bottom: 1.2rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* ---------- Progress Bar ---------- */
+.glass-progress {
+    height: 6px;
+    background: var(--glass-bg);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.glass-progress .progress-bar {
+    background: var(--accent-gradient);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+/* ---------- Completion Modal ---------- */
+.completion-icon {
+    font-size: 4rem;
+    animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes bounce-in {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---------- Flash Message Alerts ---------- */
+.flash-container {
+    position: relative;
+    z-index: 100;
+}
+
+.flash-alert {
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-primary) !important;
+    animation: slide-down 0.3s ease-out;
+}
+
+@keyframes slide-down {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Animations ---------- */
+.animate-slide-up {
+    animation: slide-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Footer ---------- */
+.footer-section {
+    border-top: 1px solid var(--glass-border);
+    background: rgba(10, 14, 23, 0.5);
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb {
+    background: none;
+    margin-bottom: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--text-muted);
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .hero-card-stack {
+        height: 280px;
+    }
+
+    .hero-card {
+        width: 200px;
+        height: 130px;
+    }
+
+    .flashcard-container {
+        height: 260px;
+    }
+
+    .flashcard-content {
+        font-size: 1.1rem;
+    }
+
+    .display-3 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-card-stack {
+        height: 220px;
+    }
+
+    .hero-card {
+        width: 160px;
+        height: 100px;
+    }
+
+    .hero-card .card-body {
+        padding: 1rem !important;
+    }
+
+    .hero-card .display-4 {
+        font-size: 1.5rem !important;
+    }
+
+    .hero-card h5 {
+        font-size: 0.85rem;
+    }
+}

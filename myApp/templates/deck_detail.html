@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ deck.title }}{% endblock %}
+
+{% block content %}
+<section class="py-5 mt-4">
+    <div class="container">
+        <!-- Deck Header -->
+        <div class="glass-card p-4 mb-4 animate-slide-up" style="border-top: 3px solid {{ deck.color }};">
+            <div class="row align-items-center">
+                <div class="col">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-2">
+                            <li class="breadcrumb-item"><a href="{{ url_for('decks') }}" class="text-muted text-decoration-none">Decks</a></li>
+                            <li class="breadcrumb-item active text-light">{{ deck.title }}</li>
+                        </ol>
+                    </nav>
+                    <h2 class="fw-bold mb-1">{{ deck.title }}</h2>
+                    {% if deck.description %}
+                    <p class="text-muted mb-0">{{ deck.description }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-auto d-flex gap-2 flex-wrap">
+                    {% if cards %}
+                    <a href="{{ url_for('study', deck_id=deck.id) }}" class="btn btn-primary btn-glow">
+                        <i class="bi bi-play-fill me-1"></i> Study
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('create_card', deck_id=deck.id) }}" class="btn btn-outline-light">
+                        <i class="bi bi-plus-lg me-1"></i> Add Card
+                    </a>
+                    <a href="{{ url_for('edit_deck', deck_id=deck.id) }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-pencil me-1"></i> Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards Grid -->
+        {% if cards %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="text-muted mb-0">{{ cards|length }} card{{ 's' if cards|length != 1 }}</p>
+        </div>
+        <div class="row g-4">
+            {% for card in cards %}
+            <div class="col-md-6 col-lg-4 animate-slide-up" style="animation-delay: {{ loop.index * 0.05 }}s;">
+                <div class="glass-card card-preview h-100 p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge bg-dark rounded-pill small">#{{ loop.index }}</span>
+                        <div class="d-flex gap-1">
+                            <a href="{{ url_for('edit_card', card_id=card.id) }}" class="btn btn-sm btn-dark rounded-circle" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form method="POST" action="{{ url_for('delete_card', card_id=card.id) }}"
+                                  onsubmit="return confirm('Delete this card?');" class="d-inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-sm btn-dark rounded-circle" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-primary fw-bold text-uppercase">Question</small>
+                        <p class="mb-0 mt-1">{{ card.question }}</p>
+                    </div>
+                    <div class="border-top border-secondary pt-3">
+                        <small class="text-success fw-bold text-uppercase">Answer</small>
+                        <p class="mb-0 mt-1 text-muted">{{ card.answer }}</p>
+                    </div>
+                    {% if card.times_reviewed > 0 %}
+                    <div class="mt-3 pt-2 border-top border-secondary">
+                        <small class="text-muted">
+                            <i class="bi bi-arrow-repeat me-1"></i>{{ card.times_reviewed }} reviews •
+                            <span class="{% if card.accuracy >= 80 %}text-success{% elif card.accuracy >= 50 %}text-warning{% else %}text-danger{% endif %}">
+                                {{ card.accuracy }}% accuracy
+                            </span>
+                        </small>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5 animate-slide-up">
+            <div class="glass-card d-inline-block p-5">
+                <i class="bi bi-card-heading text-muted display-1 d-block mb-3"></i>
+                <h4 class="fw-bold mb-2">No Cards Yet</h4>
+                <p class="text-muted mb-4">Add flashcards to this deck to start studying!</p>
+                <a href="{{ url_for('create_card', deck_id=deck.id) }}" class="btn btn-primary btn-glow px-4">
+                    <i class="bi bi-plus-lg me-1"></i> Add Your First Card
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

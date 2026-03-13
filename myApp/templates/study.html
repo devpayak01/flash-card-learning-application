@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Study — {{ deck.title }}{% endblock %}
+
+{% block content %}
+<section class="study-section py-5 mt-4">
+    <div class="container">
+        <!-- Study Header -->
+        <div class="text-center mb-4 animate-slide-up">
+            <nav aria-label="breadcrumb" class="d-flex justify-content-center">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('decks') }}" class="text-muted text-decoration-none">Decks</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('deck_detail', deck_id=deck.id) }}" class="text-muted text-decoration-none">{{ deck.title }}</a></li>
+                    <li class="breadcrumb-item active text-light">Study</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold">Studying: <span class="gradient-text">{{ deck.title }}</span></h2>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8 col-lg-6">
+                <div class="d-flex justify-content-between small text-muted mb-1">
+                    <span>Card <span id="currentIndex">1</span> of <span id="totalCards">{{ cards_data|length }}</span></span>
+                    <span><i class="bi bi-check-circle text-success me-1"></i><span id="correctCount">0</span> correct</span>
+                </div>
+                <div class="progress glass-progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                         id="studyProgress" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcard -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8 col-lg-6">
+                <div class="flashcard-container animate-slide-up" id="flashcardContainer">
+                    <div class="flashcard" id="flashcard" onclick="flipCard()">
+                        <div class="flashcard-front glass-card">
+                            <div class="flashcard-label">QUESTION</div>
+                            <div class="flashcard-content" id="cardQuestion">Loading...</div>
+                            <div class="flashcard-hint">
+                                <i class="bi bi-hand-index me-1"></i> Tap to reveal answer
+                            </div>
+                        </div>
+                        <div class="flashcard-back glass-card">
+                            <div class="flashcard-label text-success">ANSWER</div>
+                            <div class="flashcard-content" id="cardAnswer">Loading...</div>
+                            <div class="flashcard-hint">
+                                <i class="bi bi-hand-index me-1"></i> Tap to flip back
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Answer Buttons -->
+        <div class="row justify-content-center mb-4" id="answerButtons" style="display: none;">
+            <div class="col-md-8 col-lg-6">
+                <div class="d-flex gap-3 justify-content-center">
+                    <button class="btn btn-danger btn-lg px-4 py-2 rounded-pill" onclick="answerCard(false)">
+                        <i class="bi bi-x-lg me-1"></i> Incorrect
+                    </button>
+                    <button class="btn btn-success btn-lg px-4 py-2 rounded-pill" onclick="answerCard(true)">
+                        <i class="bi bi-check-lg me-1"></i> Correct
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-outline-light rounded-pill px-3" id="prevBtn" onclick="prevCard()" disabled>
+                        <i class="bi bi-chevron-left me-1"></i> Previous
+                    </button>
+                    <button class="btn btn-outline-light rounded-pill px-3" id="skipBtn" onclick="skipCard()">
+                        Skip <i class="bi bi-chevron-right ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completion Modal -->
+        <div class="modal fade" id="completionModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content glass-card border-0">
+                    <div class="modal-body text-center p-5">
+                        <div class="completion-icon mb-3">🎉</div>
+                        <h3 class="fw-bold mb-2">Session Complete!</h3>
+                        <p class="text-muted mb-4">You've reviewed all the cards in this deck.</p>
+                        <div class="row g-3 mb-4">
+                            <div class="col-4">
+                                <div class="glass-card p-3">
+                                    <h4 class="fw-bold text-primary mb-0" id="finalTotal">0</h4>
+                                    <small class="text-muted">Total</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="glass-card p-3">
+                                    <h4 class="fw-bold text-success mb-0" id="finalCorrect">0</h4>
+                                    <small class="text-muted">Correct</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="glass-card p-3">
+                                    <h4 class="fw-bold mb-0" id="finalAccuracy">0%</h4>
+                                    <small class="text-muted">Accuracy</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <button class="btn btn-primary btn-glow px-4" onclick="restartStudy()">
+                                <i class="bi bi-arrow-repeat me-1"></i> Study Again
+                            </button>
+                            <a href="{{ url_for('deck_detail', deck_id=deck.id) }}" class="btn btn-outline-light px-4">
+                                Back to Deck
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const CSRF_TOKEN = '{{ csrf_token() }}';
+    const DECK_ID = {{ deck.id }};
+    const CARDS_DATA = {{ cards_data | tojson }};
+</script>
+{% endblock %}

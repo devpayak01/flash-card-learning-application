@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="py-5 mt-4">
+    <div class="container">
+        <!-- Welcome Header -->
+        <div class="row mb-4 animate-slide-up">
+            <div class="col">
+                <h1 class="fw-bold mb-1">
+                    Good {{ 'morning' if 6 <= range(24)|list|length else 'evening' }}, <span class="gradient-text">{{ current_user.username }}</span>! 👋
+                </h1>
+                <p class="text-muted">Here's your learning overview</p>
+            </div>
+            <div class="col-auto d-flex align-items-center">
+                <a href="{{ url_for('create_deck') }}" class="btn btn-primary btn-glow">
+                    <i class="bi bi-plus-lg me-1"></i> New Deck
+                </a>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-6 col-lg-3 animate-slide-up" style="animation-delay: 0.1s;">
+                <div class="stats-card glass-card p-4">
+                    <div class="stats-icon bg-primary bg-opacity-15 text-primary">
+                        <i class="bi bi-collection-fill"></i>
+                    </div>
+                    <h3 class="fw-bold mt-3 mb-0">{{ decks|length }}</h3>
+                    <p class="text-muted small mb-0">Total Decks</p>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 animate-slide-up" style="animation-delay: 0.15s;">
+                <div class="stats-card glass-card p-4">
+                    <div class="stats-icon bg-success bg-opacity-15 text-success">
+                        <i class="bi bi-card-heading"></i>
+                    </div>
+                    <h3 class="fw-bold mt-3 mb-0">{{ total_cards }}</h3>
+                    <p class="text-muted small mb-0">Total Cards</p>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 animate-slide-up" style="animation-delay: 0.2s;">
+                <div class="stats-card glass-card p-4">
+                    <div class="stats-icon bg-warning bg-opacity-15 text-warning">
+                        <i class="bi bi-lightning-charge-fill"></i>
+                    </div>
+                    <h3 class="fw-bold mt-3 mb-0">{{ total_sessions }}</h3>
+                    <p class="text-muted small mb-0">Study Sessions</p>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3 animate-slide-up" style="animation-delay: 0.25s;">
+                <div class="stats-card glass-card p-4">
+                    <div class="stats-icon bg-info bg-opacity-15 text-info">
+                        <i class="bi bi-check2-all"></i>
+                    </div>
+                    <h3 class="fw-bold mt-3 mb-0">{{ total_studied }}</h3>
+                    <p class="text-muted small mb-0">Cards Studied</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Recent Decks -->
+            <div class="col-lg-7 animate-slide-up" style="animation-delay: 0.3s;">
+                <div class="glass-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0"><i class="bi bi-collection me-2"></i>Your Decks</h5>
+                        <a href="{{ url_for('decks') }}" class="text-primary small text-decoration-none">View All →</a>
+                    </div>
+                    {% if decks %}
+                    <div class="deck-list">
+                        {% for deck in decks[:5] %}
+                        <a href="{{ url_for('deck_detail', deck_id=deck.id) }}" class="deck-list-item d-flex align-items-center p-3 rounded-3 text-decoration-none">
+                            <div class="deck-color-dot me-3" style="background: {{ deck.color }};"></div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-semibold mb-0 text-light">{{ deck.title }}</h6>
+                                <small class="text-muted">{{ deck.card_count }} card{{ 's' if deck.card_count != 1 }}</small>
+                            </div>
+                            <div>
+                                <span class="btn btn-sm btn-outline-primary rounded-pill">
+                                    <i class="bi bi-play-fill"></i> Study
+                                </span>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-folder2-open text-muted display-4 mb-3 d-block"></i>
+                        <p class="text-muted mb-3">No decks yet. Create your first deck!</p>
+                        <a href="{{ url_for('create_deck') }}" class="btn btn-primary btn-sm btn-glow">
+                            <i class="bi bi-plus-lg me-1"></i> Create Deck
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Sessions -->
+            <div class="col-lg-5 animate-slide-up" style="animation-delay: 0.35s;">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2"></i>Recent Sessions</h5>
+                    {% if sessions %}
+                    <div class="session-list">
+                        {% for session in sessions %}
+                        <div class="session-item d-flex align-items-center p-2 mb-2 rounded-3">
+                            <div class="session-score me-3 {% if session.accuracy >= 80 %}text-success{% elif session.accuracy >= 50 %}text-warning{% else %}text-danger{% endif %}">
+                                {{ session.accuracy }}%
+                            </div>
+                            <div class="flex-grow-1">
+                                <small class="fw-semibold text-light d-block">{{ session.deck.title }}</small>
+                                <small class="text-muted">{{ session.cards_studied }} cards • {{ session.completed_at.strftime('%b %d') }}</small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-journal-text text-muted display-5 d-block mb-2"></i>
+                        <p class="text-muted small">No study sessions yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

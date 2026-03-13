@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}My Decks{% endblock %}
+
+{% block content %}
+<section class="py-5 mt-4">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4 animate-slide-up">
+            <div>
+                <h1 class="fw-bold mb-1"><i class="bi bi-collection-fill text-primary me-2"></i>My Decks</h1>
+                <p class="text-muted mb-0">{{ decks|length }} deck{{ 's' if decks|length != 1 }}</p>
+            </div>
+            <a href="{{ url_for('create_deck') }}" class="btn btn-primary btn-glow">
+                <i class="bi bi-plus-lg me-1"></i> New Deck
+            </a>
+        </div>
+
+        {% if decks %}
+        <div class="row g-4">
+            {% for deck in decks %}
+            <div class="col-md-6 col-lg-4 animate-slide-up" style="animation-delay: {{ loop.index * 0.05 }}s;">
+                <div class="deck-card glass-card h-100" style="border-top: 3px solid {{ deck.color }};">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="deck-color-badge" style="background: {{ deck.color }};">
+                                <i class="bi bi-collection"></i>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-dark border-0 rounded-pill" data-bs-toggle="dropdown">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+                                    <li><a class="dropdown-item" href="{{ url_for('edit_deck', deck_id=deck.id) }}">
+                                        <i class="bi bi-pencil me-2"></i>Edit
+                                    </a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('create_card', deck_id=deck.id) }}">
+                                        <i class="bi bi-plus-circle me-2"></i>Add Card
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form method="POST" action="{{ url_for('delete_deck', deck_id=deck.id) }}"
+                                              onsubmit="return confirm('Delete &quot;{{ deck.title }}&quot;? This cannot be undone.');">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="bi bi-trash me-2"></i>Delete
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <a href="{{ url_for('deck_detail', deck_id=deck.id) }}" class="text-decoration-none">
+                            <h5 class="fw-bold text-light mb-2">{{ deck.title }}</h5>
+                        </a>
+                        {% if deck.description %}
+                        <p class="text-muted small mb-3">{{ deck.description|truncate(80) }}</p>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                            <span class="badge bg-dark rounded-pill px-3 py-2">
+                                <i class="bi bi-card-heading me-1"></i> {{ deck.card_count }} card{{ 's' if deck.card_count != 1 }}
+                            </span>
+                            {% if deck.card_count > 0 %}
+                            <a href="{{ url_for('study', deck_id=deck.id) }}" class="btn btn-sm btn-primary rounded-pill px-3">
+                                <i class="bi bi-play-fill me-1"></i> Study
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-5 animate-slide-up">
+            <div class="glass-card d-inline-block p-5">
+                <i class="bi bi-folder2-open text-muted display-1 d-block mb-3"></i>
+                <h4 class="fw-bold mb-2">No Decks Yet</h4>
+                <p class="text-muted mb-4">Create your first flashcard deck to start learning!</p>
+                <a href="{{ url_for('create_deck') }}" class="btn btn-primary btn-glow px-4">
+                    <i class="bi bi-plus-lg me-1"></i> Create Your First Deck
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

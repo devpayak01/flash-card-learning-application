@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ 'Edit Card' if editing else 'Add Card' }}{% endblock %}
+
+{% block content %}
+<section class="py-5 mt-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="glass-card p-4 p-md-5 animate-slide-up">
+                    <div class="text-center mb-4">
+                        <div class="auth-icon mb-3">
+                            <i class="bi bi-{% if editing %}pencil{% else %}plus-circle{% endif %}"></i>
+                        </div>
+                        <h2 class="fw-bold">{{ 'Edit Card' if editing else 'Add New Card' }}</h2>
+                        <p class="text-muted">Deck: <span class="text-primary">{{ deck.title }}</span></p>
+                    </div>
+
+                    <form method="POST" action="{{ url_for('edit_card', card_id=card.id) if editing else url_for('create_card', deck_id=deck.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                        <div class="mb-3">
+                            <label for="question" class="form-label small fw-semibold">
+                                <i class="bi bi-question-circle text-primary me-1"></i> Question (Front)
+                            </label>
+                            <textarea class="form-control glass-input" id="question"
+                                      name="question" rows="4"
+                                      placeholder="Enter the question or prompt..."
+                                      required>{{ card.question if editing else '' }}</textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="answer" class="form-label small fw-semibold">
+                                <i class="bi bi-check-circle text-success me-1"></i> Answer (Back)
+                            </label>
+                            <textarea class="form-control glass-input" id="answer"
+                                      name="answer" rows="4"
+                                      placeholder="Enter the answer..."
+                                      required>{{ card.answer if editing else '' }}</textarea>
+                        </div>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="submit" class="btn btn-primary btn-glow flex-grow-1 py-2 fw-semibold">
+                                <i class="bi bi-check-lg me-1"></i> {{ 'Update Card' if editing else 'Save Card' }}
+                            </button>
+                            {% if not editing %}
+                            <button type="submit" name="add_another" value="1" class="btn btn-outline-success py-2 px-3">
+                                <i class="bi bi-plus-lg me-1"></i> Save & Add Another
+                            </button>
+                            {% endif %}
+                            <a href="{{ url_for('deck_detail', deck_id=deck.id) }}"
+                               class="btn btn-outline-secondary py-2 px-3">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
